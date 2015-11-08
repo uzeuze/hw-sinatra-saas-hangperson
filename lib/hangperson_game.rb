@@ -27,7 +27,7 @@ class HangpersonGame
     if (letter =~ /^[a-z]/i) && !(letter.nil?)
       letter = letter.downcase
     else
-      raise ArgumentError
+      raise ArgumentError.new("Non-Letter character or blank form is not allowed")
     end
     
     if @word.include?(letter)
