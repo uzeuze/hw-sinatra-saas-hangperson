@@ -43,7 +43,10 @@ class HangpersonApp < Sinatra::Base
     letter = params[:guess].to_s[0]
     ### YOUR CODE HERE ###
     flash[:message] = "You have already used that letter." if !@game.guess(letter)
-    flash[:message] = "Invalid guess." if !(letter =~ /^[a-z]/i) || (letter.nil?)
+    if !(letter =~ /^[a-z]/i) || (letter.nil?)
+      flash[:message] = "Invalid guess." 
+      redirect '/show'
+    end
     @game.guess letter
     session[:wrong_guesses] << letter if !session[:word].include?(letter) && !session[:wrong_guesses].include?(letter)
     session[:guesses] << letter if session[:word].include?(letter) && !session[:guesses].include?(letter)
