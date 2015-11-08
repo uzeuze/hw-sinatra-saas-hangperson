@@ -24,11 +24,15 @@ class HangpersonGame
   end
   
   def guess letter
-    if (letter =~ /^[a-z]/i) && !(letter.nil?)
-      letter = letter.downcase
-    else
-      raise ArgumentError.new("Non-Letter character or blank form is not allowed")
+    if letter == nil
+      raise ArgumentError.new("No nil is allowed")
+    elsif letter.length == 0
+      raise ArgumentError.new("No Empty character is allowed")
+    elsif letter !~ /[[:alpha:]]/
+      raise ArgumentError.new("No Non-Letter character is allowed")
     end
+    
+      letter = letter.downcase
     
     if @word.include?(letter)
       if !@guesses.include?(letter)
