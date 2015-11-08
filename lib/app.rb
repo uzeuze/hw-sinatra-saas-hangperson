@@ -39,7 +39,6 @@ class HangpersonApp < Sinatra::Base
     #   display "You have already used that letter."
 
     # Either way, the user should then be shown the main game screen ('show' action).
-
   end
   
   get '/show' do
