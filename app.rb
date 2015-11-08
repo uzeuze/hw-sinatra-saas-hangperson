@@ -29,7 +29,9 @@ class HangpersonApp < Sinatra::Base
     # NOTE: don't change next line - it's needed by autograder!
     word = params[:word] || HangpersonGame.get_random_word
     # NOTE: don't change previous line - it's needed by autograder!
-
+    session[:word] = word
+    session[:guesses] = ""
+    session[:wrong_guesses] = ""
     @game = HangpersonGame.new(word)
     redirect '/show'
   end
@@ -42,6 +44,9 @@ class HangpersonApp < Sinatra::Base
     ### YOUR CODE HERE ###
     flash[:message] = "You have already used that letter" if !@game.guess(letter)
     @game.guess letter
+    session[:wrong_guesses] << letter if !session[:word].include?(letter) && !session[:wrong_guesses].include?(letter)
+    session[:guesses] << letter if session[:word].include?(letter) && !session[:guesses].include?(letter)
+    redirect '/lose' if session[:wrong_guesses].length >= 7
     redirect '/show'
   end
   
@@ -63,12 +68,33 @@ class HangpersonApp < Sinatra::Base
   
   get '/win' do
     ### YOUR CODE HERE ###
-    erb :win # You may change/remove this line
+    if @game.check_win_or_lose == :win
+    erb :win
+    else
+      redirect '/show'
+    end
   end
   
   get '/lose' do
     ### YOUR CODE HERE ###
-    erb :lose # You may change/remove this line
+    if @game.check_win_or_lose == :lose
+      erb :lose # You may change/remove this line
+    else
+      redirect '/show'
+    end
   end
+  
+    def word_with_guesses w,g
+      display = ""
+      w.split("").each do |f|
+        if g.include? f
+          display << f
+        else
+          display << '-'
+        end
+      end
+      display
+    end
+
   
 end
