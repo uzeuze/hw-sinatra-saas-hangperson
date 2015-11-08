@@ -47,7 +47,6 @@ class HangpersonApp < Sinatra::Base
     @game.guess letter
     session[:wrong_guesses] << letter if !session[:word].include?(letter) && !session[:wrong_guesses].include?(letter)
     session[:guesses] << letter if session[:word].include?(letter) && !session[:guesses].include?(letter)
-    redirect '/lose' if session[:wrong_guesses].length >= 7
     redirect '/show'
   end
   
