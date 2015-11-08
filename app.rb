@@ -42,7 +42,7 @@ class HangpersonApp < Sinatra::Base
   post '/guess' do
     letter = params[:guess].to_s[0]
     ### YOUR CODE HERE ###
-    flash[:message] = "You have already used that letter" if !@game.guess(letter)
+    flash[:message] = "You have already used that letter." if !@game.guess(letter)
     flash[:message] = "Invalid guess." if !(letter =~ /^[a-z]/i) || (letter.nil?)
     @game.guess letter
     session[:wrong_guesses] << letter if !session[:word].include?(letter) && !session[:wrong_guesses].include?(letter)
